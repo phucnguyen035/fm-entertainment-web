@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-blue-dark text-white;
+  }
+}
+
 @layer components {
   .hero {
     @apply w-full text-[#333];
