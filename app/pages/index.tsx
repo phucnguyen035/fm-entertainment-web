@@ -1,8 +1,6 @@
-import login from 'app/auth/mutations/login'
 import Main from 'app/core/layouts/Main'
-import { Image, BlitzPage, GetServerSideProps, useMutation } from 'blitz'
+import { BlitzPage, GetServerSideProps } from 'blitz'
 import { directus } from 'integrations/directus'
-import logo from 'public/logo.png'
 
 /*
  * This file is just for a pleasant getting started page for your new app.
@@ -10,8 +8,6 @@ import logo from 'public/logo.png'
  */
 
 const Home: BlitzPage = () => {
-  // const [mutate] = useMutation(login)
-
   const login = async () => {
     const res = await directus.auth.login({
       email: 'nguyen.hphuc035@gmail.com',

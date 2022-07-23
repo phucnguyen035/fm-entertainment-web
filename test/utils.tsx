@@ -1,8 +1,20 @@
-import { RouterContext, BlitzRouter, BlitzProvider } from "blitz"
-import { render as defaultRender } from "@testing-library/react"
-import { renderHook as defaultRenderHook } from "@testing-library/react-hooks"
+import { RouterContext, BlitzRouter, BlitzProvider } from 'blitz'
+import { render as defaultRender } from '@testing-library/react'
+import { renderHook as defaultRenderHook } from '@testing-library/react-hooks'
+import { ReactNode } from 'react'
 
-export * from "@testing-library/react"
+export * from '@testing-library/react'
+
+const createDefaultWrapper =
+  (dehydratedState: RenderHookOptions['dehydratedState'], router?: RenderHookOptions['router']) =>
+  ({ children }: { children: ReactNode }) =>
+    (
+      <BlitzProvider dehydratedState={dehydratedState}>
+        <RouterContext.Provider value={{ ...mockRouter, ...router }}>
+          {children}
+        </RouterContext.Provider>
+      </BlitzProvider>
+    )
 
 // --------------------------------------------------------------------------------
 // This file customizes the render() and renderHook() test functions provided
@@ -30,13 +42,7 @@ export function render(
 ) {
   if (!wrapper) {
     // Add a default context wrapper if one isn't supplied from the test
-    wrapper = ({ children }) => (
-      <BlitzProvider dehydratedState={dehydratedState}>
-        <RouterContext.Provider value={{ ...mockRouter, ...router }}>
-          {children}
-        </RouterContext.Provider>
-      </BlitzProvider>
-    )
+    wrapper = createDefaultWrapper(dehydratedState, router)
   }
   return defaultRender(ui, { wrapper, ...options })
 }
@@ -58,22 +64,16 @@ export function renderHook(
 ) {
   if (!wrapper) {
     // Add a default context wrapper if one isn't supplied from the test
-    wrapper = ({ children }) => (
-      <BlitzProvider dehydratedState={dehydratedState}>
-        <RouterContext.Provider value={{ ...mockRouter, ...router }}>
-          {children}
-        </RouterContext.Provider>
-      </BlitzProvider>
-    )
+    wrapper = createDefaultWrapper(dehydratedState, router)
   }
   return defaultRenderHook(hook, { wrapper, ...options })
 }
 
 export const mockRouter: BlitzRouter = {
-  basePath: "",
-  pathname: "/",
-  route: "/",
-  asPath: "/",
+  basePath: '',
+  pathname: '/',
+  route: '/',
+  asPath: '/',
   params: {},
   query: {},
   isReady: true,
